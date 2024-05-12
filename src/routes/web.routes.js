@@ -1,12 +1,11 @@
-// routes/web.routes.js
-import { Router } from 'express';
-import { pool } from '../index.js'; // Importe a conexão do banco de dados
+import express from 'express';
+const router = express.Router();
 
-const router = Router();
+import { pool } from '../database/connection';
 
-router.get("/ping", async (req, res) => {
-  const result = await pool.query("SELECT NOW()");
-  res.json(result[0]);
+router.get('/ping', async (req, res) => {
+    const [result] = await pool.query("SELECT NOW()");
+    res.json(result);
 });
 
-export default router;
+module.exports = router;
