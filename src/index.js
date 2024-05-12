@@ -4,6 +4,7 @@ import {config} from 'dotenv'
 config()
 
 const app = express();
+const webRoutes = require('./routes/web.routes');
 
 const pool = createPool({
   host: process.env.MYSQLDB_HOST,
