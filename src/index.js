@@ -1,6 +1,8 @@
 import express from "express";
+import path from "path";
 import { createPool } from "mysql2/promise";
 import {config} from 'dotenv'
+import webRoutes from './routes/web.routes';
 config()
 
 const app = express();
@@ -14,9 +16,12 @@ const pool = createPool({
 
 pool.on("connection", () => console.log("DB Connected!"));
 
-app.get("/ping", async (req, res) => {
-  const result = await pool.query("SELECT NOW()");
-  res.json(result[0]);
+app.set('views', path.join(__dirname, 'views'));
+
+app.use('/', webRoutes);
+
+app.get('/', function(req, res){
+  res.sendFile(path.join(__dirname, 'views', 'index.html'));
 });
 
 app.listen(process.env.NODE_DOCKER_PORT || 3000);
